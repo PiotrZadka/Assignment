@@ -1,6 +1,7 @@
 class alien{
   float alienX;
   float alienY;
+  
   final int LEFT = 0;
   final int RIGHT = 1;
   int direction = LEFT;
@@ -12,13 +13,13 @@ class alien{
   void moveAlien(){
     
     if(direction == RIGHT){
-      alienX = alienX + 1;
-      if(alienX + (150) >= width) {
+      alienX = alienX + 2;
+      if(alienX + (70) >= width) {
         direction = LEFT;
       }
     }
     if(direction == LEFT){
-      alienX = alienX - 1;
+      alienX = alienX - 2;
       if(alienX <= 0) {
         direction = RIGHT;
       }

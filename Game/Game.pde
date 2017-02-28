@@ -36,7 +36,7 @@ void setup(){
   background.resize(width,height);
   shipImage.resize(70,70);
   alienImage.resize(70,70);
-  player1 = new playerShip(265,630);
+  player1 = new playerShip(265,610);
   alien1 = new alien(265,100);
   
   
