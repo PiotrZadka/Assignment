@@ -3,10 +3,9 @@ PImage shipImage;
 PImage alienImage;
 boolean shoot = false;
 missile[] missiles = new missile[3];  // numbers of missiles in magazine
-// alien[] aliens = new alien[1];
-// add array of [][] aliens
+ArrayList<alien> alienList = new ArrayList<alien>();
 playerShip player1;
-alien alien1;
+
 
 void keyPressed()
 {
@@ -37,7 +36,16 @@ void setup(){
   shipImage.resize(70,70);
   alienImage.resize(70,70);
   player1 = new playerShip(265,630);
-  alien1 = new alien(265,100);
+  
+  // spawn aliens
+  float startAlien = 25;
+  for(int i = 0; i < 6; i++){
+    float leftLimit = startAlien - 25;
+    float rightLimit = startAlien + 25;
+    alienList.add(new alien(startAlien,100,0.5,leftLimit,rightLimit));
+    startAlien = startAlien + 96.5;
+  }
+  
   
   
 }
@@ -47,7 +55,12 @@ int count = 0;  // keep track on how many bullets there is on the screen at a ti
 
   image(background,0,0);
   player1.drawShip();
-  alien1.updateAlien();
+  
+  // show/move spawned aliens
+  for(int k = 0; k < alienList.size(); k++){
+    alienList.get(k).updateAlien();
+  }
+  
   //for loop to draw aliens row/column
   for(int i = 0; i < missiles.length; i++){
      if(missiles[i] != null){ 
@@ -58,8 +71,18 @@ int count = 0;  // keep track on how many bullets there is on the screen at a ti
      }
   }
   if(count == missiles.length){  // check if amount of bullets on the screen is 3
-    for(int i=0; i< missiles.length; i++){  // refresh bullets in array
+    for(int i=0; i< missiles.length; i++){  // reload
     missiles[i] = null;
+    }
+  }
+  //check for each missile if any aliens is being hit if so remove it from arraylist.
+  for(int i = 0; i < missiles.length; i++){
+    for(int j = 0; j < alienList.size(); j++){
+      if(alienList.get(j).isHit(missiles[i])){
+        alienList.remove(j);
+        missiles[i] = null;
+        count = count +1;
+      }
     }
   }
 }
