@@ -6,15 +6,14 @@ boolean shoot = false;
 
 int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
 
-missile[] missiles = new missile[3];  // numbers of missiles in magazine
+
 ArrayList<missile> missileList = new ArrayList<missile>();
 ArrayList<alien> alienList = new ArrayList<alien>();
 
 playerShip player1;
 
 
-void keyPressed()
-{
+void keyPressed(){
   float moveLength = 20;
   if(keyCode == LEFT){
     player1.moveShip(-moveLength);  // move object left
@@ -22,8 +21,7 @@ void keyPressed()
   if(keyCode == RIGHT){
     player1.moveShip(moveLength);   // move object right
   } 
-  if(key == ' ')
-  {
+  if(key == ' '){
    if(count < 3){
        missileList.add(new missile(player1.shipX+32,player1.shipY-10));
        count = count + 1;
@@ -53,8 +51,6 @@ void setup(){
 }
 
 void draw(){
-
-
   image(background,0,0);
   player1.drawShip();
   
@@ -72,11 +68,9 @@ void draw(){
      }
      
      //test
-     
      println(count);
      println("Size: "+missileList.size());
-     
-     
+       
   //check for each missile if any aliens is being hit if so remove it from arraylist.
   for(int i = 0; i < missileList.size(); i++){
     for(int j = 0; j < alienList.size(); j++){
@@ -84,7 +78,6 @@ void draw(){
         alienList.remove(j);  //remove alien from array
         missileList.remove(i);
         count = count - 1;     // add count to reload counter
-       
       }
     }
   }
