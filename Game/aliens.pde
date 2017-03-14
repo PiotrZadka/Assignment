@@ -39,8 +39,8 @@ class alien{
   {
     if (missile!=null)
     {
-    if (abs(this.alienX-missile.x) < 50 &&
-    abs(this.alienY-missile.y) < 50)
+    if (abs(this.alienX+30-missile.x) < 30 &&   // no clue what i did here but it works lol
+    abs(this.alienY-missile.y) < 40)
     return true;
     }
   return false;
