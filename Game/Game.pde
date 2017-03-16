@@ -74,10 +74,11 @@ void draw(){
   //check for each missile if any aliens is being hit if so remove it from arraylist.
   for(int i = 0; i < missileList.size(); i++){
     for(int j = 0; j < alienList.size(); j++){
-      if(alienList.get(j).isHit(missileList.get(i))){
+      if(alienList.get(j).isHit(missileList.get(i))){  // crash is being triggered here sometimes
         alienList.remove(j);  //remove alien from array
         missileList.remove(i);
         count = count - 1;     // add count to reload counter
+        break;  // should prevent from crashes
       }
     }
   }
