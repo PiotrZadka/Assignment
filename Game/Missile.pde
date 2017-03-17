@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 class missile{
   float x;
   float y;
@@ -23,7 +23,7 @@ class missile{
    rect(x,y,5,10);
   }
 
-=======
+
 class missile{
   float x;
   float y;
@@ -47,6 +47,4 @@ class missile{
    fill(255,0,0);
    rect(x,y,5,10);
   }
-
->>>>>>> origin/master
 }

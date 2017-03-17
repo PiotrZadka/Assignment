@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 class alien{
   float alienX;
   float alienY;
@@ -53,7 +53,7 @@ class alien{
   }
   
   
-=======
+
 class alien{
   float alienX;
   float alienY;
@@ -106,7 +106,4 @@ class alien{
     drawAlien();
     moveAlien();
   }
-  
-  
->>>>>>> origin/master
 }
