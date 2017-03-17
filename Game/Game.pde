@@ -5,12 +5,19 @@ PImage alienImage;
 boolean shoot = false;
 
 int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
+<<<<<<< HEAD
 int col = 6;
 int row = 3;
 
 ArrayList<missile> missileList = new ArrayList<missile>();
 ArrayList<alien> alienList = new ArrayList<alien>();
 alien [][] alienArray = new alien [row][col];  // 2d array of temporary aliens
+=======
+
+
+ArrayList<missile> missileList = new ArrayList<missile>();
+ArrayList<alien> alienList = new ArrayList<alien>();
+>>>>>>> origin/master
 
 playerShip player1;
 
@@ -49,6 +56,7 @@ void setup(){
     //alien(alienX,alienY,alienSpeed,leftLimit,rightLimit) REFERANCE
     alienList.add(new alien(startAlien,100,0.5,leftLimit,rightLimit));
     startAlien = startAlien + 96;
+<<<<<<< HEAD
     
     // TEST 2d array arlien create
     int s1 = 25;
@@ -63,6 +71,8 @@ void setup(){
       s1 = 25;
       s2 = s2 + 50;
     }
+=======
+>>>>>>> origin/master
   }
 }
 
@@ -90,7 +100,11 @@ void draw(){
          }
      }
      
+<<<<<<< HEAD
      //test array size
+=======
+     //test
+>>>>>>> origin/master
      println(count);
      println("Size: "+missileList.size());
        
@@ -102,6 +116,7 @@ void draw(){
         missileList.remove(i);
         count = count - 1;     // add count to reload counter
         break;  // should prevent from crashes
+<<<<<<< HEAD
       }
     }
   }
@@ -115,6 +130,8 @@ void draw(){
           count = count -1;
           break;
         }
+=======
+>>>>>>> origin/master
       }
     }
   }
