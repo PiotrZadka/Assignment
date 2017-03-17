@@ -15,7 +15,7 @@ class missile{
     y = y - axisY;
     }
   boolean reachedTop(){
-    return y < 0;
+    return y < 10;
   }
   void drawMissile(){
    fill(255,0,0);
