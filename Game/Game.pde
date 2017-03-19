@@ -5,8 +5,8 @@ PImage alienImage;
 boolean shoot = false;
 
 int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
-int col = 6;
-int row = 3;
+int col = 6;  // number of columns for alienArr
+int row = 4;
 
 ArrayList<missile> missileList = new ArrayList<missile>();
 ArrayList<alien> alienList = new ArrayList<alien>();
@@ -41,46 +41,35 @@ void setup(){
   alienImage.resize(70,40);
   player1 = new playerShip(265,630);
   
-  // spawn aliens
-  float startAlien = 25;
-  for(int i = 0; i < 6; i++){
-    float leftLimit = startAlien - 25;  // comment out to stop aliens
-    float rightLimit = startAlien + 25;
-    //alien(alienX,alienY,alienSpeed,leftLimit,rightLimit) REFERANCE
-    alienList.add(new alien(startAlien,100,0.5,leftLimit,rightLimit));
-    startAlien = startAlien + 96;
-    
-    // TEST 2d array arlien create
-    int s1 = 25;
-    int s2 = 300;
-    int val = 96;
+    // 2d Array of Aliens spawn
+    int xPosAlien = 25;
+    int yPosAlien = 100;
     
     for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
-        alienArray[k][j] = new alien(s1,s2,0,0,0);
-        s1 = s1+val;
+        float leftLimit = xPosAlien - 25;
+        float rightLimit = xPosAlien + 25;
+        
+        alienArray[k][j] = new alien(xPosAlien,yPosAlien,0.5,leftLimit,rightLimit);
+        xPosAlien = xPosAlien + 96;
       }
-      s1 = 25;
-      s2 = s2 + 50;
+      xPosAlien = 25;
+      yPosAlien = yPosAlien + 50;
     }
   }
-}
+
 
 void draw(){
   image(background,0,0);
   player1.drawShip();
-  //test 2d spawn/move
+
+  // alienArray behaviours (visibility + move)
   for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
         alienArray[k][j].updateAlien();
       }
   }
   
-  
-  // show/move spawned aliens
-  for(int k = 0; k < alienList.size(); k++){
-    alienList.get(k).updateAlien();
-  }
   //check if missiles reached top
   for(int i = 0; i < missileList.size(); i++){
          missileList.get(i).updateMissile(); 
@@ -90,7 +79,7 @@ void draw(){
          }
      }
      
-     //test array size
+     //test array size for missileList
      println(count);
      println("Size: "+missileList.size());
        
