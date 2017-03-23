@@ -6,11 +6,13 @@ float shipY;
     this.shipX = shipX;
     this.shipY = shipY;
   }
+  
   void moveShip(float axisX){
     shipX = shipX + axisX;
     if(shipX < 0){
       shipX = 0;
     }
+    
     if(shipX > width - 70){
       shipX = width - 70;
     } 

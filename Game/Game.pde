@@ -4,9 +4,10 @@ PImage alienImage;
 
 
 
-int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
 int col = 6;  // number of columns for alienArray
 int row = 4;
+int countAlien = col * row;
+int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
 
 ArrayList<missile> missileList = new ArrayList<missile>();
 alien [][] alienArray = new alien [row][col];
@@ -62,7 +63,6 @@ void draw(){
   image(background,0,0);
   player1.drawShip();
 
-
   // alienArray behaviours (visibility + move)
   for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
@@ -90,9 +90,16 @@ void draw(){
          // alienArray[j][k] = new alien(-50,-50,0,0,0); // No clue how to remove array element without changing it size so just move if off the screen lol
           missileList.remove(i);
           count = count -1;
+          countAlien = countAlien - 1;
           break;
         }
       }
     }
+  }
+  //temporart end splash screen
+  if(countAlien == 0){
+    textSize(32);
+    fill(255,255,255);
+    text("Level Completed",width/2-125, height/2); 
   }
 }

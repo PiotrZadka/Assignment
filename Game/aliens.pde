@@ -17,6 +17,7 @@ class alien{
     this.rightLimit = rightLimit;
     this.alienSpeed = alienSpeed;
   }
+  
   void moveAlien(){
     if(direction == RIGHT){
       alienX = alienX + alienSpeed;
@@ -24,6 +25,7 @@ class alien{
         direction = LEFT;
       }
     }
+    
     if(direction == LEFT){
       alienX = alienX - alienSpeed;
       if(alienX <= leftLimit) {
@@ -36,8 +38,7 @@ class alien{
     image(alienImage,alienX,alienY);
   }
 
-  boolean isHit(missile missile)
-  {
+  boolean isHit(missile missile){
     if (missile!=null)
     {
     if (abs(this.alienX+30-missile.x) < 30 &&   // no clue what i did here but it works lol
@@ -50,6 +51,7 @@ class alien{
   void makeVisible(boolean visStatus){  // set the current status of visibility 
     visible = visStatus;
   }
+  
   boolean getVisible(){  // return current status of visibility
     return visible;
   }
