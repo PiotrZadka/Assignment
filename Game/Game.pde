@@ -1,7 +1,9 @@
 PImage background;
 PImage shipImage;
 PImage alienImage;
-PImage explosionImage;
+PImage explosionImage0;
+PImage explosionImage1;
+PImage explosionImage2;
 
 
 int col = 6;  // number of columns for alienArray
@@ -38,8 +40,12 @@ void setup(){
   background = loadImage("cosmosBg.jpg");
   shipImage = loadImage("playerShip.png");
   alienImage = loadImage("alien.png");
-  explosionImage = loadImage("explosion.png");
-  explosionImage.resize(70,70);
+  explosionImage0 = loadImage("explosion0.png");
+  explosionImage0.resize(70,70);
+  explosionImage1 = loadImage("explosion1.png");
+  explosionImage1.resize(70,70);
+  explosionImage2 = loadImage("explosion2.png");
+  explosionImage2.resize(70,70);
   background.resize(width,height);
   shipImage.resize(70,70);
   alienImage.resize(70,40);
@@ -74,7 +80,6 @@ void draw(){
         }
       }
   }
-  
   //check if missiles reached top
   for(int i = 0; i < missileList.size(); i++){
          missileList.get(i).updateMissile(); 
@@ -90,10 +95,8 @@ void draw(){
         for(int i = 0; i < missileList.size(); i++){
         if(alienArray[j][k].isHit(missileList.get(i)) && alienArray[j][k].getVisible()){  // if alien is hit & visible  remove it and set visibility  to false
           alienArray[j][k].makeVisible(false);
-
-          explosion1 = new explosion(alienArray[j][k].alienX, alienArray[j][k].alienY);
+          explosion1 = new explosion(alienArray[j][k].alienX,alienArray[j][k].alienY);
           explosion1.drawExplosion(); 
-          
           missileList.remove(i);
           count = count -1;
           countAlien = countAlien - 1;
