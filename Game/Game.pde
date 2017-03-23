@@ -18,7 +18,6 @@ alien [][] alienArray = new alien [row][col];
 playerShip player1;
 explosion explosion1;
 
-
 void keyPressed(){
   float moveLength = 20;
   if(keyCode == LEFT){

@@ -1,26 +1,21 @@
 class explosion{
   float expX;
   float expY;
-  int counter = 0;
+  int count = 0;
   
 explosion(float expX, float expY){
   this.expX = expX;
   this.expY = expY;
 }
   void drawExplosion(){
-    
-   if(counter >= 0 && counter <=10){
+   if(count <= 60){
    image(explosionImage0,expX,expY);
    }
-   else if(counter > 10 && counter <=20){
+   if(count > 60 && count <= 120){
    image(explosionImage1,expX,expY);
    }
-   else if(counter > 20 && counter <=25){
+   if(count > 120 && count <= 190){
    image(explosionImage2,expX,expY);
    }
-   else{
-   counter = 0;
-   }
-   counter = counter + 1;
   }
 }
