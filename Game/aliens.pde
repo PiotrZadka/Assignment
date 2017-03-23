@@ -8,6 +8,7 @@ class alien{
   final int LEFT = 0;
   final int RIGHT = 1;
   int direction = LEFT;
+  boolean visible = true;
   
   alien(float alienX, float alienY, float alienSpeed, float leftLimit, float rightLimit){
     this.alienX = alienX;
@@ -44,6 +45,13 @@ class alien{
     return true;
     }
   return false;
+  }
+  
+  void makeVisible(boolean visStatus){  // set the current status of visibility 
+    visible = visStatus;
+  }
+  boolean getVisible(){  // return current status of visibility
+    return visible;
   }
   
   void updateAlien(){

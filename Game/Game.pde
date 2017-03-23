@@ -2,7 +2,7 @@ PImage background;
 PImage shipImage;
 PImage alienImage;
 
-boolean shoot = false;
+
 
 int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
 int col = 6;  // number of columns for alienArray
@@ -62,11 +62,13 @@ void draw(){
   image(background,0,0);
   player1.drawShip();
 
+
   // alienArray behaviours (visibility + move)
   for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
+        if(alienArray[k][j].getVisible()){  // if alien is visible update it
         alienArray[k][j].updateAlien();
-        //change every second row to move other way
+        }
       }
   }
   
@@ -79,16 +81,13 @@ void draw(){
          }
      }
      
-   //test array size for missileList
-     println(count);
-     println("Size: "+missileList.size());
-       
   // test 2d array hit (remove off the screen if hit) // temporary fix for removing aliens
     for(int j = 0; j < row; j++){
       for(int k = 0; k < col; k++){
         for(int i = 0; i < missileList.size(); i++){
-        if(alienArray[j][k].isHit(missileList.get(i))){
-          alienArray[j][k] = new alien(-50,-50,0,0,0); // No clue how to remove array element without changing it size so just move if off the screen lol
+        if(alienArray[j][k].isHit(missileList.get(i)) && alienArray[j][k].getVisible()){  // if alien is hit & visible  remove it and set visibility  to false
+          alienArray[j][k].makeVisible(false);
+         // alienArray[j][k] = new alien(-50,-50,0,0,0); // No clue how to remove array element without changing it size so just move if off the screen lol
           missileList.remove(i);
           count = count -1;
           break;
