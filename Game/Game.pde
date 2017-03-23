@@ -5,12 +5,11 @@ PImage alienImage;
 boolean shoot = false;
 
 int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
-int col = 6;  // number of columns for alienArr
+int col = 6;  // number of columns for alienArray
 int row = 4;
 
 ArrayList<missile> missileList = new ArrayList<missile>();
-ArrayList<alien> alienList = new ArrayList<alien>();
-alien [][] alienArray = new alien [row][col];  // 2d array of temporary aliens
+alien [][] alienArray = new alien [row][col];
 
 playerShip player1;
 
@@ -67,6 +66,7 @@ void draw(){
   for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
         alienArray[k][j].updateAlien();
+        //change every second row to move other way
       }
   }
   
@@ -79,21 +79,10 @@ void draw(){
          }
      }
      
-     //test array size for missileList
+   //test array size for missileList
      println(count);
      println("Size: "+missileList.size());
        
-  //check for each missile if any aliens is being hit if so remove it from arraylist.
-  for(int i = 0; i < missileList.size(); i++){
-    for(int j = 0; j < alienList.size(); j++){
-      if(alienList.get(j).isHit(missileList.get(i))){  // crash is being triggered here sometimes
-        alienList.remove(j);  //remove alien from array
-        missileList.remove(i);
-        count = count - 1;     // add count to reload counter
-        break;  // should prevent from crashes
-      }
-    }
-  }
   // test 2d array hit (remove off the screen if hit) // temporary fix for removing aliens
     for(int j = 0; j < row; j++){
       for(int k = 0; k < col; k++){
