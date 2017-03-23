@@ -1,4 +1,4 @@
-class playerShip{
+ class playerShip{
 float shipX;
 float shipY;
   

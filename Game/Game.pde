@@ -1,7 +1,7 @@
 PImage background;
 PImage shipImage;
 PImage alienImage;
-
+PImage explosionImage;
 
 
 int col = 6;  // number of columns for alienArray
@@ -9,10 +9,12 @@ int row = 4;
 int countAlien = col * row;
 int count = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
 
+
 ArrayList<missile> missileList = new ArrayList<missile>();
 alien [][] alienArray = new alien [row][col];
 
 playerShip player1;
+explosion explosion1;
 
 
 void keyPressed(){
@@ -36,6 +38,8 @@ void setup(){
   background = loadImage("cosmosBg.jpg");
   shipImage = loadImage("playerShip.png");
   alienImage = loadImage("alien.png");
+  explosionImage = loadImage("explosion.png");
+  explosionImage.resize(70,70);
   background.resize(width,height);
   shipImage.resize(70,70);
   alienImage.resize(70,40);
@@ -49,7 +53,6 @@ void setup(){
       for(int j = 0; j < col; j++){
         float leftLimit = xPosAlien - 25;
         float rightLimit = xPosAlien + 25;
-        
         alienArray[k][j] = new alien(xPosAlien,yPosAlien,0.5,leftLimit,rightLimit);
         xPosAlien = xPosAlien + 96;
       }
@@ -80,14 +83,17 @@ void draw(){
             count = count -1 ;
          }
      }
-     
+
   // test 2d array hit (remove off the screen if hit) // temporary fix for removing aliens
     for(int j = 0; j < row; j++){
       for(int k = 0; k < col; k++){
         for(int i = 0; i < missileList.size(); i++){
         if(alienArray[j][k].isHit(missileList.get(i)) && alienArray[j][k].getVisible()){  // if alien is hit & visible  remove it and set visibility  to false
           alienArray[j][k].makeVisible(false);
-         // alienArray[j][k] = new alien(-50,-50,0,0,0); // No clue how to remove array element without changing it size so just move if off the screen lol
+
+          explosion1 = new explosion(alienArray[j][k].alienX, alienArray[j][k].alienY);
+          explosion1.drawExplosion(); 
+          
           missileList.remove(i);
           count = count -1;
           countAlien = countAlien - 1;
