@@ -2,13 +2,12 @@ class explosion{
   float expX;
   float expY;
   int counter = 0;
-  
-  
+
 explosion(float expX, float expY){
   this.expX = expX;
-  this.expY = expY;
-  
+  this.expY = expY; 
 }
+
   void renderExp(){
     if(counter >=0 && counter <=30){
     image(explosionImage,expX,expY);

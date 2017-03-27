@@ -41,8 +41,8 @@ class alien{
   boolean isHit(missile missile){
     if (missile!=null)
     {
-    if (abs(this.alienX+30-missile.x) < 30 &&   // no clue what i did here but it works lol
-    abs(this.alienY-missile.y) < 40)
+    if (abs(this.alienX+35-missile.x) < 35 &&   // no clue what i did here but it works lol
+    abs(this.alienY+20-missile.y) < 20)
     return true;
     }
   return false;
@@ -56,10 +56,19 @@ class alien{
     return visible;
   }
   
+  float getAlienX(){
+    return alienX;
+  }
+  
+  float getAlienY(){
+    return alienY;
+  }
+  
   void updateAlien(){
     drawAlien();
     moveAlien();
   }
-  
+
+ 
   
 }
