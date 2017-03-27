@@ -68,7 +68,6 @@ void setup(){
 void draw(){
   image(background,0,0);
   player1.drawShip();
-  
 
   // alienArray behaviours (visibility + move)
   for(int k = 0; k < row; k++){
@@ -97,6 +96,7 @@ void draw(){
         for(int i = 0; i < missileList.size(); i++){
         if(alienArray[k][j].isHit(missileList.get(i)) && alienArray[k][j].getVisible()){  // if alien is hit & visible  remove it and set visibility  to false
           alienArray[k][j].makeVisible(false);
+
           
           explosion1 = new explosion (alienArray[k][j].getAlienX(), alienArray[k][j].getAlienY());
           explosionList.add(explosion1);

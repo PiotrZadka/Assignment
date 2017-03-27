@@ -2,6 +2,7 @@ class explosion{
   float expX;
   float expY;
   int counter = 0;
+  int count = 0;
 
 explosion(float expX, float expY){
   this.expX = expX;
