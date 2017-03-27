@@ -1,10 +1,13 @@
  class playerShip{
 float shipX;
 float shipY;
+PImage shipImage;
   
   playerShip (float shipX, float shipY){
     this.shipX = shipX;
     this.shipY = shipY;
+    shipImage = loadImage("images/defender.png");
+    shipImage.resize(70,70);
   }
   
   void moveShip(float axisX){
