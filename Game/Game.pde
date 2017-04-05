@@ -61,7 +61,7 @@ void setup(){
   background.resize(width,height);
   
   
-  player1 = new playerRudy(width/2,600);
+  player1 = new playerRudy(width/2-25,625);
   
     // 2d Array of Tanks spawn
     int xPosTank = 75;
