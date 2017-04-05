@@ -1,18 +1,22 @@
 PImage background;
 
-int col = 6;  // number of columns for alienArray
+int col = 5;  // number of columns for tankArray
 int row = 4;
-int alienCount = col * row;
+int tankCount = col * row;
 int missileCount = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
 int score = 0;
+final int IMG1 = 0;
+final int IMG2 = 1;
+final int IMG3 = 2;
+int image = IMG1;
 
 //arrays
 ArrayList<explosion>explosionList = new ArrayList<explosion>();
 ArrayList<missile> missileList = new ArrayList<missile>();
-alien [][] alienArray = new alien [row][col];
+tanks [][] tankArray = new tanks [row][col];
 
 //constructors
-playerShip player1;
+playerRudy player1;
 explosion explosion1;
 
 //temporary score bar
@@ -27,54 +31,73 @@ void scorebar(){
 void keyPressed(){
   float moveLength = 20;
   if(keyCode == LEFT){
-    player1.moveShip(-moveLength);  // move object left
+    player1.moveRudy(-moveLength);  // move object left
+    image = IMG2;
+    
   }
   if(keyCode == RIGHT){
-    player1.moveShip(moveLength);   // move object right
+    player1.moveRudy(moveLength);   // move object right
+    image = IMG3;
   } 
   if(key == ' '){
    if(missileCount < 3){
-       missileList.add(new missile(player1.shipX+32,player1.shipY-10));
+       missileList.add(new missile(player1.rudyX+22,player1.rudyY-10));
        missileCount = missileCount + 1;
    }
+  }
+}
+void keyReleased(){
+  if(keyCode == LEFT){
+    image = IMG1;
+  }
+  if(keyCode == RIGHT){
+    image = IMG1;
   }
 }
 
 void setup(){
   size (600,700);
-  background = loadImage("images/cosmosBg2.gif");
+  background = loadImage("images/bg.png");
   background.resize(width,height);
   
   
-  player1 = new playerShip(265,630);
+  player1 = new playerRudy(width/2,600);
   
-    // 2d Array of Aliens spawn
-    int xPosAlien = 25;
-    int yPosAlien = 100;
-    int limitAdj = 25;
+    // 2d Array of Tanks spawn
+    int xPosTank = 75;
+    int yPosTank = 100;
+    int limitAdj = 75;
     
     for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
-        float leftLimit = xPosAlien - limitAdj;
-        float rightLimit = xPosAlien + limitAdj;
-        alienArray[k][j] = new alien(xPosAlien,yPosAlien,0.75,leftLimit,rightLimit);
-        xPosAlien = xPosAlien + 96;
+        float leftLimit = xPosTank - limitAdj;
+        float rightLimit = xPosTank + limitAdj;
+        tankArray[k][j] = new tanks(xPosTank,yPosTank,0.75,leftLimit,rightLimit);
+        xPosTank = xPosTank + 96;
       }
-      xPosAlien = limitAdj;
-      yPosAlien = yPosAlien + 50;
+      xPosTank = limitAdj;
+      yPosTank = yPosTank + 50;
     }
   }
 
 void draw(){
   image(background,0,0);
-  player1.drawShip();
+  if(image == IMG1){
+  player1.drawRudyFwd();
+  }
+  else if(image == IMG2){
+  player1.drawRudyLeft();
+  }
+  else{
+  player1.drawRudyRight();
+  }
   scorebar();
 
-  // alienArray behaviours (visibility + move)
+  // tankArray behaviours (visibility + move)
   for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
-        if(alienArray[k][j].getVisible()){  // if alien is visible update it
-        alienArray[k][j].updateAlien();
+        if(tankArray[k][j].getVisible()){  // if tank is visible update it
+        tankArray[k][j].updateTank();
         }
       }
   }
@@ -92,18 +115,18 @@ void draw(){
     explosionList.get(i).renderExp();
   }
 
-  // test 2d array hit (remove off the screen if hit) // temporary fix for removing aliens
+  // test 2d array hit (remove off the screen if hit) // temporary fix for removing tanks
     for(int k = 0; k < row; k++){
       for(int j = 0; j< col; j++){
         for(int i = 0; i < missileList.size(); i++){
-        if(alienArray[k][j].isHit(missileList.get(i)) && alienArray[k][j].getVisible()){  // if alien is hit & visible  remove it and set visibility  to false
-          alienArray[k][j].makeVisible(false);
-          explosion1 = new explosion (alienArray[k][j].getAlienX(), alienArray[k][j].getAlienY());
+        if(tankArray[k][j].isHit(missileList.get(i)) && tankArray[k][j].getVisible()){  // if tank is hit & visible  remove it and set visibility  to false
+          tankArray[k][j].makeVisible(false);
+          explosion1 = new explosion (tankArray[k][j].getTankX(), tankArray[k][j].getTankY());
           explosionList.add(explosion1);
           missileList.remove(i);
           score = score + 10;
           missileCount = missileCount -1;
-          alienCount = alienCount - 1;
+          tankCount = tankCount - 1;
           break;
         }
       }
@@ -111,7 +134,7 @@ void draw(){
   }
   
   //temporart end splash screen
-  if(alienCount == 0){
+  if(tankCount == 0){
     textSize(32);
     fill(255,255,255);
     text("Level Completed",width/2-125, height/2); 
