@@ -1,4 +1,5 @@
 class tanks{
+//enemies German tanks "Tiger"
   float tankX;
   float tankY;
   float leftLimit;

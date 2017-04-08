@@ -1,10 +1,12 @@
  class playerRudy{
-//Rudy is a famous polish tank
+//Player controlled tank
+//"Rudy" is a famous polish tank
 float rudyX;
 float rudyY;
 float adjY = 20;  // adjustment for position "Y" of left/right animation of Rudy
 PImage rudyfwd,rudyleft,rudyright;
 int counter = 0;
+boolean face = true;
 
   
   playerRudy (float rudyX, float rudyY){
@@ -30,15 +32,19 @@ int counter = 0;
     } 
   }
   
+
   void drawRudyFwd(){
    image(rudyfwd,rudyX,rudyY);
+   face = true;
   }
   
   void drawRudyLeft(){
    image(rudyleft,rudyX,rudyY+adjY);
+   face = false;
   }
   
   void drawRudyRight(){
    image(rudyright,rudyX,rudyY+adjY);
+   face = false;
   }
 }
