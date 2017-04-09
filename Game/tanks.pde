@@ -10,6 +10,7 @@ class tanks{
   final int RIGHT = 1;
   int direction = LEFT;
   boolean visible = true;
+  boolean checked = true;
   PImage tiger1,tiger2,tiger3,tiger4;
   
   tanks(float tankX, float tankY, float tankSpeed, float leftLimit, float rightLimit){
@@ -38,12 +39,21 @@ class tanks{
   return false;
   }
   
-  boolean getVisible(){  // return current status of visibility
-    return visible;
+  // Mark if tank is available to be drawn for shooting
+  void makeChecked(boolean check){
+    checked = check;
   }
   
-  void makeVisible(boolean visStatus){  // set the current status of visibility 
+  boolean getCheck(){
+    return checked;
+  }
+  // Set if the current tank is visible
+  void makeVisible(boolean visStatus){ 
     visible = visStatus;
+  }
+    
+  boolean getVisible(){  
+    return visible;
   }
   
   float getTankX(){

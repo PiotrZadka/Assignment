@@ -5,22 +5,25 @@ int row = 4;
 float tankCount = col * row;
 int missileCount = 0;  // reload counter - keep track on how many bullets there is on the screen at a time 
 int score = 0;
-int missileAmount = 3;
+int missileAmount = 50; // change later to 3
+int missileLimit = 50;  // change later to 3
 int life = 3;
 
+//Draw a random tank to shot missile
+int ranX = (int)random(row);
+int ranY = (int)random(col);
 
-int randomTank = (int)random(tankCount);
-int countR = 0;
 // state of draw playerRudy image
 final int IMG1 = 0;  //face forward
 final int IMG2 = 1;  //face left
 final int IMG3 = 2;  //face right
 int image = IMG1;
 
+boolean gameMode = true;
+
 //arrays
 ArrayList<explosion>explosionList = new ArrayList<explosion>();
 ArrayList<missile> missileList = new ArrayList<missile>();
-ArrayList<missile_drop> missileDrop = new ArrayList<missile_drop>();
 ArrayList<playerRudy>playerList = new ArrayList<playerRudy>();
 tanks [][] tankArray = new tanks [row][col];
 
@@ -45,17 +48,17 @@ void scorebar(){
 void keyPressed(){
 float moveLength = 20;
   if(keyCode == LEFT){
-    player1.moveRudy(-moveLength);  // move object left
+    playerList.get(0).moveRudy(-moveLength);  // move object left
     image = IMG2;
     
   }
   if(keyCode == RIGHT){
-    player1.moveRudy(moveLength);   // move object right
+    playerList.get(0).moveRudy(moveLength);   // move object right
     image = IMG3;
   } 
   if(key == ' '){
-   if(missileCount < 3){
-       missileList.add(new missile(player1.rudyX+22,player1.rudyY-10));
+   if(missileCount < missileLimit){
+       missileList.add(new missile(playerList.get(0).rudyX+22,playerList.get(0).rudyY-10));
        missileCount = missileCount + 1;
        missileAmount = missileAmount -1;
    }
@@ -77,6 +80,7 @@ void setup(){
   player1 = new playerRudy(width/2-25,625);
   playerList.add(player1);
   
+  
  
     // 2d Array of Tanks spawn
     int xPosTank = 75;
@@ -93,24 +97,39 @@ void setup(){
       xPosTank = limitAdj;
       yPosTank = yPosTank + 50;
     }
+    
+    missileDrop1 = new missile_drop(tankArray[ranX][ranY].getTankX(),tankArray[ranY][ranY].getTankY());
 } 
 
 
 void draw(){
+  
   image(background,0,0);
   scorebar();
   
-  if(image == IMG1){
-  player1.drawRudyFwd();
-  }
-  else if(image == IMG2){
-  player1.drawRudyLeft();
-  }
-  else{
-  player1.drawRudyRight();
-  }
+  if(gameMode == true){  
+    
+    if(image == IMG1){
+    playerList.get(0).drawRudyFwd();
+    }
+    else if(image == IMG2){
+    playerList.get(0).drawRudyLeft();
+    }
+    else{
+    playerList.get(0).drawRudyRight();
+    }
+
+  missileDrop1.updateMissileDrop();
   
-  
+ // if enemy tank missile reach bottom limit choose another tank to shot. (Only draw a tank that is currently visible)
+  if(missileDrop1.reachedBottom() == true){
+    if(tankArray[ranX][ranY].getVisible() == true && tankArray[ranX][ranY].getCheck() == true){
+    missileDrop1 = new missile_drop(tankArray[ranX][ranY].getTankX(),tankArray[ranX][ranY].getTankY());
+    }
+    //draw another tank
+    ranX = (int)random(row);
+    ranY = (int)random(col);
+  }
   
   
   // tankArray behaviours (visibility + move)
@@ -121,26 +140,8 @@ void draw(){
         }
       }
   }
-  
-  //add enemy missiles to array and spawn it
-  for(int k = 0; k < row; k++){
-    for(int j = 0; j < col; j++){
-      missileDrop1 = new missile_drop(tankArray[k][j].getTankX(), tankArray[k][j].getTankY());
-      missileDrop.add(missileDrop1);
-      }
-    }
-  
-  missileDrop.get(randomTank).updateMissileDrop();
-
-  
-  for(int i = 0; i < missileDrop.size(); i++){
-    if(missileDrop.get(i).reachedBottom()){
-      missileDrop.remove(i);
-    }
-  }
-
-
- 
+   
+   
   //check if missiles reached top
   for(int i = 0; i < missileList.size(); i++){
          missileList.get(i).updateMissile(); 
@@ -162,6 +163,7 @@ void draw(){
         for(int i = 0; i < missileList.size(); i++){
         if(tankArray[k][j].isHit(missileList.get(i)) && tankArray[k][j].getVisible()){  // if tank is hit & visible  remove it and set visibility  to false
           tankArray[k][j].makeVisible(false);
+          tankArray[k][j].makeChecked(false);
           explosion1 = new explosion(tankArray[k][j].getTankX(), tankArray[k][j].getTankY());
           explosionList.add(explosion1);
           missileList.remove(i);
@@ -174,11 +176,15 @@ void draw(){
       }
     }
   }
-
-  // end splash screen
-  if(tankCount == 0){
+  if(tankCount == 0){ // all tanks destroyed
+    gameMode = false;
+  }
+  
+  //end game
+  }
+  if(gameMode == false){
     textSize(32);
     fill(255,255,255);
-    text("Level Completed",width/2-125, height/2); 
+    text("Level Completed",width/2-125, height/2);
   }
 }
