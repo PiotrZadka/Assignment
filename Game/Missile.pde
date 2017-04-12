@@ -19,7 +19,7 @@ class missile{
    }
    
   boolean reachedTop(){
-    return y < 16;
+    return y < 31;
   }
   
   
