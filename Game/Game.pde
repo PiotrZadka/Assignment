@@ -8,10 +8,11 @@ int score = 0;
 int missileAmount = 50; // change later to 3
 int missileLimit = 50;  // change later to 3
 int life = 3;
+float moveLength = 20;
 
 //Draw a random tank to shot missile
-int ranX = (int)random(row);
-int ranY = (int)random(col);
+int ranX = (int)random(row-1);
+int ranY = (int)random(col-1);
 
 // state of draw playerRudy image
 final int IMG1 = 0;  //face forward
@@ -20,6 +21,8 @@ final int IMG3 = 2;  //face right
 int image = IMG1;
 
 boolean gameMode = true;
+boolean gameOver = false;
+boolean levelFinish = false;
 
 //arrays
 ArrayList<explosion>explosionList = new ArrayList<explosion>();
@@ -46,7 +49,6 @@ void scorebar(){
 }
 
 void keyPressed(){
-float moveLength = 20;
   if(keyCode == LEFT){
     playerList.get(0).moveRudy(-moveLength);  // move object left
     image = IMG2;
@@ -79,8 +81,6 @@ void setup(){
   background.resize(width,height);
   player1 = new playerRudy(width/2-25,625);
   playerList.add(player1);
-  
-  
  
     // 2d Array of Tanks spawn
     int xPosTank = 75;
@@ -98,9 +98,9 @@ void setup(){
       yPosTank = yPosTank + 50;
     }
     
+    
     missileDrop1 = new missile_drop(tankArray[ranX][ranY].getTankX(),tankArray[ranY][ranY].getTankY());
 } 
-
 
 void draw(){
   
@@ -120,7 +120,23 @@ void draw(){
     }
 
   missileDrop1.updateMissileDrop();
-  
+
+
+//player is shot by enemy tank
+ if(playerList.get(0).isShot(missileDrop1)){
+     life--;
+     explosion1 = new explosion(playerList.get(0).rudyX,playerList.get(0).rudyY);
+     explosionList.add(explosion1);
+     ranX = (int)random(row);
+     ranY = (int)random(col);
+     missileDrop1 = new missile_drop(tankArray[ranX][ranY].getTankX(),tankArray[ranX][ranY].getTankY());
+   }
+// LOSE CONDITION
+ if(life == 0){
+   gameMode = false;
+   gameOver = true;
+ }
+   
  // if enemy tank missile reach bottom limit choose another tank to shot. (Only draw a tank that is currently visible)
   if(missileDrop1.reachedBottom() == true){
     if(tankArray[ranX][ranY].getVisible() == true && tankArray[ranX][ranY].getCheck() == true){
@@ -176,15 +192,26 @@ void draw(){
       }
     }
   }
+  
+// WIN CONDITION
   if(tankCount == 0){ // all tanks destroyed
     gameMode = false;
+    levelFinish = true;
   }
-  
-  //end game
-  }
+}
+
+// TEMPORARY END GAME SPLASH SCREEN
   if(gameMode == false){
+    if(levelFinish == true){
     textSize(32);
     fill(255,255,255);
-    text("Level Completed",width/2-125, height/2);
+    text("Level Completed",width/2-110, height/2);
+    }
+  
+    if(gameOver == true){
+      textSize(32);
+      fill(255,255,255);
+      text("Game Over",width/2-110, height/2);
+    }
   }
 }

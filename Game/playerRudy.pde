@@ -32,6 +32,16 @@ boolean face = true;
     } 
   }
   
+  boolean isShot(missile_drop missile_drop){
+    if (missile_drop!=null){
+      if (abs(this.rudyX-12-missile_drop.dropX) < 25 &&   // no clue what i did here but it works lol
+      abs(this.rudyY+35-missile_drop.dropY) < 70){
+      return true;
+      }
+    }
+  return false;
+  }
+  
 
   void drawRudyFwd(){
    image(rudyfwd,rudyX,rudyY);
