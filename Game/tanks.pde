@@ -12,6 +12,7 @@ class tanks{
   boolean visible = true;
   boolean checked = true;
   PImage tiger1,tiger2,tiger3,tiger4;
+  int limit = 600; // 600 frames (10 seconds)
   
   tanks(float tankX, float tankY, float tankSpeed, float leftLimit, float rightLimit){
     this.tankX = tankX;
@@ -38,12 +39,16 @@ class tanks{
     }
   return false;
   }
+  // reached bottom of the screen -  player tank height
+  boolean isBottom(){
+    return tankY > 550;
+  }
   
   // Mark if tank is available to be drawn for shooting
   void makeChecked(boolean check){
     checked = check;
   }
-  
+ 
   boolean getCheck(){
     return checked;
   }
@@ -87,6 +92,12 @@ class tanks{
         direction = LEFT;
       }
     }
+    //move tanks down every 10 seconds
+    //Draw renders 60 frames per second so 600 frames = 10 seconds
+    if(frameCount%limit == 0){
+      tankY = tankY + 50;
+    }
+    
   }
   void drawTankRight(){
     if(counter > 0 && counter <=30){

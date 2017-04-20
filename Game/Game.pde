@@ -1,8 +1,7 @@
 // -- VARIABLES -- 
-
 //Enemy "Tiger" tanks variables
-  int col = 5;  // number of columns for tankArray
-  int row = 4;
+  final int col = 5;  // number of columns for tankArray
+  final int row = 4;
   float tankCount = col * row;
   
 // Tank spawn 2D array variables
@@ -14,7 +13,7 @@
 
 // Player Missile variables
   int missileCount = 0;  //control how many missiles is on the screen
-  int missileLimit = 3;   // maximum amount of missiles on the screen
+  final int missileLimit = 3;   // maximum amount of missiles on the screen
 
 // Score variables
   int score = 0;
@@ -81,6 +80,7 @@ void keyPressed(){
        missileList.add(new missile(playerList.get(0).rudyX+22,playerList.get(0).rudyY-10));
        missileCount = missileCount + 1;
        missileAmount = missileAmount -1;
+       image = IMG1;
    }
   }
 }
@@ -121,7 +121,6 @@ void draw(){
   
   image(background,0,0);
   scorebar();
-  
   if(gameMode == true){  
     
     if(image == IMG1){
@@ -135,7 +134,7 @@ void draw(){
     }
 
   missileDrop1.updateMissileDrop();
-
+  
 
 // Player is shot by enemy tank
  if(playerList.get(0).isShot(missileDrop1)){
@@ -145,7 +144,8 @@ void draw(){
      ranX = (int)random(row);
      ranY = (int)random(col);
      missileDrop1 = new missile_drop(tankArray[ranX][ranY].getTankX(),tankArray[ranX][ranY].getTankY());
-   }
+  }
+   
 // LOSE CONDITION
  if(life == 0){
    gameMode = false;
@@ -162,7 +162,6 @@ void draw(){
     ranY = (int)random(col);
   }
   
-  
   // 2D Tank Array behaviour (visibility + movement)
   for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
@@ -171,7 +170,15 @@ void draw(){
         }
       }
   }
-   
+  
+  for(int k = 0; k < row; k++){
+    for(int j = 0; j < col; j++){
+      if(tankArray[k][j].isBottom() == true && tankArray[k][j].getVisible()){
+        gameMode = false;
+        gameOver = true;
+      }
+    }
+  }
    
   // Check if missiles reached top
   for(int i = 0; i < missileList.size(); i++){
@@ -179,7 +186,7 @@ void draw(){
          if(missileList.get(i).reachedTop()){  
            missileList.remove(i);
            missileAmount = missileAmount +1;
-            missileCount = missileCount -1 ;
+           missileCount = missileCount -1 ;
          }
      }
    // Render explosion event
