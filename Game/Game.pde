@@ -34,9 +34,10 @@
   int image = IMG1;
 
 // Game states
-  boolean gameMode = true;  // Controlls current state of the game
+  boolean gameMode = false;  // Controlls current state of the game
   boolean gameOver = false;  // Player reached LOSE CONDITION
   boolean levelFinish = false; // Player reched WIN CONDITION
+  boolean menu = true;
 
 // Arrays to hold game objects
   ArrayList<explosion>explosionList = new ArrayList<explosion>();
@@ -225,7 +226,22 @@ void draw(){
 // -- TEMPORARY END GAME SPLASH SCREEN --
 
 // WIN EVENT
-  if(gameMode == false){
+    if(gameMode == false){
+// Menu Screen
+    if(menu == true){
+      textSize(32);
+      fill(150,50,255);
+      text("Tonk Defender",width/2-120,height/2-100);
+      fill(255,255,255);
+      text("Press ENTER to play",width/2-155,height/2);
+      text("Press ESC to exit", width/2-130,height/2+40);
+        if(keyCode == ENTER){
+          gameMode = true;
+        }
+        if(keyCode == ESC){
+          exit();
+        }
+    }
     if(levelFinish == true){
     textSize(32);
     fill(255,255,255);
@@ -236,7 +252,7 @@ void draw(){
     if(gameOver == true){
       textSize(32);
       fill(255,255,255);
-      text("Game Over",width/2-110, height/2);
+      text("Game Over",width/2-105, height/2);
     }
   }
 }
