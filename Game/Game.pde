@@ -237,9 +237,11 @@ void draw(){
       text("Press ESC to exit", width/2-130,height/2+40);
         if(keyCode == ENTER){
           gameMode = true;
+          menu = false;
         }
         if(keyCode == ESC){
           exit();
+          
         }
     }
     if(levelFinish == true){
