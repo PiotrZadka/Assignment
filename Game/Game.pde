@@ -223,11 +223,11 @@ void draw(){
   }
 }
 
-// -- TEMPORARY END GAME SPLASH SCREEN --
+// -- END GAME SPLASH SCREEN --
 
 // WIN EVENT
     if(gameMode == false){
-// Menu Screen
+// MENU SPLASH
     if(menu == true){
       textSize(32);
       fill(150,50,255);
