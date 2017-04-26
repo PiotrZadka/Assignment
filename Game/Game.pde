@@ -10,14 +10,15 @@
   int limitAdj = 75;  // distance between objects in array
   float leftLimit;  // left limit where a enemy tank can move
   float rightLimit;  // right limit where a enemy tank can move
-
+  float speed = 0.75;
 // Player Missile variables
   int missileCount = 0;  //control how many missiles is on the screen
-  final int missileLimit = 3;   // maximum amount of missiles on the screen
+  final int missileLimit = 50;   // maximum amount of missiles on the screen
 
 // Score variables
+  int level = 1;
   int score = 0;
-  int missileAmount = 3;
+  int missileAmount = 50;
   int life = 3;
 
 // Player movement speed
@@ -62,28 +63,44 @@ void scorebar(){
   textSize(20);
   fill(0,0,0);
   text("Score: "+score, 30, 23); 
-  text("Missiles: "+missileAmount, width/2-70, 23);
+  text("Level: "+level, 150,23);
+  text("Missiles: "+missileAmount, width/2+40, 23);
   text("Life: "+life, width-100, 23);
   
 }
+// NEW LEVEL
+void newLevel(int xPosTank, int yPosTank, float speed){
+  // Enemy tank spawn 2D array  
+    for(int k = 0; k < row; k++){
+      for(int j = 0; j < col; j++){
+        leftLimit = xPosTank - limitAdj;
+        rightLimit = xPosTank + limitAdj;
+        tankArray[k][j] = new tanks(xPosTank,yPosTank,speed,leftLimit,rightLimit);
+        xPosTank = xPosTank + 96;
+      }
+      xPosTank = limitAdj;
+      yPosTank = yPosTank + 50;
+    }
+}
+
 // -- KEYBAORD CONTROLLS --
 void keyPressed(){
-  if(keyCode == LEFT){
-    playerList.get(0).moveRudy(-moveLength);  // move object left
-    image = IMG2;
-  }
-  if(keyCode == RIGHT){
-    playerList.get(0).moveRudy(moveLength);   // move object right
-    image = IMG3;
-  } 
-  if(key == ' '){
-   if(missileCount < missileLimit){
-       missileList.add(new missile(playerList.get(0).rudyX+22,playerList.get(0).rudyY-10));
-       missileCount = missileCount + 1;
-       missileAmount = missileAmount -1;
-       image = IMG1;
-   }
-  }
+    if(keyCode == LEFT){
+      playerList.get(0).moveRudy(-moveLength);  // move object left
+      image = IMG2;
+    }
+    if(keyCode == RIGHT){
+      playerList.get(0).moveRudy(moveLength);   // move object right
+      image = IMG3;
+    } 
+    if(key == ' '){
+     if(missileCount < missileLimit){
+         missileList.add(new missile(playerList.get(0).rudyX+22,playerList.get(0).rudyY-10));
+         missileCount = missileCount + 1;
+         missileAmount = missileAmount -1;
+         image = IMG1;
+     }
+    }
 }
 // PLAYER IMAGE CONTROL
 void keyReleased(){
@@ -103,17 +120,8 @@ void setup(){
   player1 = new playerRudy(width/2-25,625);
   playerList.add(player1);
  
-// Enemy tank spawn 2D array  
-    for(int k = 0; k < row; k++){
-      for(int j = 0; j < col; j++){
-        leftLimit = xPosTank - limitAdj;
-        rightLimit = xPosTank + limitAdj;
-        tankArray[k][j] = new tanks(xPosTank,yPosTank,0.75,leftLimit,rightLimit);
-        xPosTank = xPosTank + 96;
-      }
-      xPosTank = limitAdj;
-      yPosTank = yPosTank + 50;
-    }
+    // Enemy tank spawn 2D array  
+    newLevel(75,100,0.75);
     //Spawn missile at the begining of the game
     missileDrop1 = new missile_drop(tankArray[ranX][ranY].getTankX(),tankArray[ranY][ranY].getTankY());
 } 
@@ -247,9 +255,21 @@ void draw(){
     if(levelFinish == true){
     textSize(32);
     fill(255,255,255);
-    text("Level Completed",width/2-110, height/2);
+    text("Level Completed",width/2-140, height/2);
+    text("Press ENTER to continue", width/2-190, height/2+50);
+      if(keyCode == ENTER){
+        //remove existing missiles & explosions
+           missileList.clear();
+           explosionList.clear();
+        // create new level and add speed to tank
+        speed = speed + 0.50;
+        newLevel(75,100,speed);
+        tankCount = col * row;
+        level = level + 1;
+        gameMode = true;
+        levelFinish = false;
+      }
     }
-  
 // LOSE EVENT
     if(gameOver == true){
       textSize(32);
