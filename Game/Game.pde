@@ -13,14 +13,13 @@
   float speed = 0.75;
 // Player Missile variables
   int missileCount = 0;  //control how many missiles is on the screen
-  final int missileLimit = 50;   // maximum amount of missiles on the screen
+  final int missileLimit = 5;   // maximum amount of missiles on the screen
 
 // Score variables
   int level = 1;
   int score = 0;
-  int missileAmount = 50;
+  int missileAmount = 5;
   int life = 3;
-  int levelCount = 0;
 
 // Player movement speed
   float moveLength = 20;
@@ -40,6 +39,7 @@
   boolean gameOver = false;  // Player reached LOSE CONDITION
   boolean levelFinish = false; // Player reched WIN CONDITION
   boolean menu = true;
+  boolean gameFinish = false;
 
 // Arrays to hold game objects
   ArrayList<explosion>explosionList = new ArrayList<explosion>();
@@ -52,12 +52,13 @@
 
 // -- END OF VARIABLES -- 
 
-// Constructors
+//Constructors
 playerRudy player1;
 explosion explosion1;
 missile_drop missileDrop1;
+tanks tanks1;
 
-// Temporary Score Bar
+// Scoreboard
 void scorebar(){
   fill(255,255,255);
   rect(0,0,width,30);
@@ -67,9 +68,9 @@ void scorebar(){
   text("Level: "+level, 150,23);
   text("Missiles: "+missileAmount, width/2+40, 23);
   text("Life: "+life, width-100, 23);
-  
 }
-// NEW LEVEL
+
+// New level
 void newLevel(int xPosTank, int yPosTank, float speed){
   // Enemy tank spawn 2D array  
     for(int k = 0; k < row; k++){
@@ -82,6 +83,20 @@ void newLevel(int xPosTank, int yPosTank, float speed){
       xPosTank = limitAdj;
       yPosTank = yPosTank + 50;
     }
+}
+
+// Resets counters and level before returning to Menu
+void resetCounts(){
+  score = 0;
+  life = 3;
+  level = 1;
+  missileAmount = 5;
+  missileCount = 0;
+  speed = 0.75;
+  newLevel(75,100,speed);
+  tankCount = col * row;
+  gameMode = false;
+  menu = true;
 }
 
 // -- KEYBAORD CONTROLLS --
@@ -103,6 +118,7 @@ void keyPressed(){
      }
     }
 }
+
 // PLAYER IMAGE CONTROL
 void keyReleased(){
   if(keyCode == LEFT){
@@ -112,6 +128,7 @@ void keyReleased(){
     image = IMG1;
   }
 }
+
 // -- END OF KEYBAORD CONTROLLS --
 
 void setup(){
@@ -128,7 +145,6 @@ void setup(){
 } 
 
 void draw(){
-  
   image(background,0,0);
   scorebar();
   if(gameMode == true){  
@@ -145,7 +161,6 @@ void draw(){
 
   missileDrop1.updateMissileDrop();
   
-
 // Player is shot by enemy tank
  if(playerList.get(0).isShot(missileDrop1)){
      life--;
@@ -162,7 +177,7 @@ void draw(){
    gameOver = true;
  }
    
- // If enemy tank missile reach bottom limit choose another tank to shot. (Only visible(available) tanks can be drawn)
+// If enemy tank missile reach bottom limit choose another tank to shot. (Only visible(available) tanks can be drawn)
   if(missileDrop1.reachedBottom() == true){
     if(tankArray[ranX][ranY].getVisible() == true && tankArray[ranX][ranY].getCheck() == true){
     missileDrop1 = new missile_drop(tankArray[ranX][ranY].getTankX(),tankArray[ranX][ranY].getTankY());
@@ -172,7 +187,7 @@ void draw(){
     ranY = (int)random(col);
   }
   
-  // 2D Tank Array behaviour (visibility + movement)
+// 2D Tank Array behaviour (visibility + movement)
   for(int k = 0; k < row; k++){
       for(int j = 0; j < col; j++){
         if(tankArray[k][j].getVisible()){  // if tank is visible update it
@@ -180,7 +195,8 @@ void draw(){
         }
       }
   }
-  
+
+// Game ends if enemy reaches player
   for(int k = 0; k < row; k++){
     for(int j = 0; j < col; j++){
       if(tankArray[k][j].isBottom() == true && tankArray[k][j].getVisible()){
@@ -190,7 +206,7 @@ void draw(){
     }
   }
    
-  // Check if missiles reached top
+// Check if missiles reached top
   for(int i = 0; i < missileList.size(); i++){
          missileList.get(i).updateMissile(); 
          if(missileList.get(i).reachedTop()){  
@@ -199,13 +215,13 @@ void draw(){
            missileCount = missileCount -1 ;
          }
      }
-   // Render explosion event
+// Render explosion event
   for(int i = 0; i < explosionList.size(); i++){  // render explosion
     explosionList.get(i).renderExp();
   }
   
 
-  // Enemy Tank events trigger conditions
+// Enemy Tank events trigger conditions
     for(int k = 0; k < row; k++){
       for(int j = 0; j< col; j++){
         for(int i = 0; i < missileList.size(); i++){
@@ -233,27 +249,28 @@ void draw(){
 }
 
 // -- END GAME SPLASH SCREEN --
-
 // WIN EVENT
     if(gameMode == false){
+      
 // MENU SPLASH
-    if(menu == true){
-      textSize(32);
-      fill(150,50,255);
-      text("Tonk Defender",width/2-120,height/2-100);
-      fill(255,255,255);
-      text("Press ENTER to play",width/2-155,height/2);
-      text("Press ESC to exit", width/2-130,height/2+40);
-        if(keyCode == ENTER){
-          gameMode = true;
-          menu = false;
-        }
-        if(keyCode == ESC){
-          exit();
-          
-        }
-    }
-    if(levelFinish == true){
+      if(menu == true){
+        textSize(32);
+        fill(51,102,0);
+        text("Tonk Defender",width/2-120,height/2-100);
+        fill(255,255,255);
+        text("Press ENTER to play",width/2-155,height/2);
+        text("Press ESC to exit", width/2-130,height/2+40);
+          if(keyCode == ENTER){
+            gameMode = true;
+            menu = false;
+          }
+          if(keyCode == ESC){
+            exit();
+          }
+      }
+      
+// ADDING LEVELS
+    if(levelFinish == true && level < 4){
     textSize(32);
     fill(255,255,255);
     text("Level Completed",width/2-140, height/2);
@@ -264,19 +281,46 @@ void draw(){
            explosionList.clear();
         // create new level and add speed to tank
         speed = speed + 0.50;
+        level = level + 1;
+        missileAmount = 5;
+        missileCount = 0;
         newLevel(75,100,speed);
         tankCount = col * row;
-        level = level + 1;
-        levelCount = levelCount + 1;
         gameMode = true;
         levelFinish = false;
       }
+    }    
+
+// LAST LEVEL EVENT
+    if(levelFinish == true && level == 4){
+       missileList.clear();
+       explosionList.clear();
+      textSize(32);
+      fill(255,255,255);
+      text("Game Finished",width/2-140, height/2);
+      text("Your Score:"+score, width/2-140, height/2+50);
+      text("Press R to return to menu", width/2-210, height/2+100);
+       if(key == 'r'){
+         resetCounts();
+         levelFinish = false;
+         menu = true;
+       }
     }
-// LOSE EVENT
+    
+// 0 LIFE LOSE EVENT
     if(gameOver == true){
       textSize(32);
       fill(255,255,255);
       text("Game Over",width/2-105, height/2);
+      text("Your Score:"+score,width/2-115, height/2+50);
+      text("Press R to return to menu", width/2-190, height/2+100);
+      missileList.clear();
+      explosionList.clear();
+      if(key == 'r'){
+         resetCounts();
+         levelFinish = false;
+         gameOver = false;
+       }
     }
   }
 }
