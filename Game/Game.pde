@@ -20,6 +20,7 @@
   int score = 0;
   int missileAmount = 50;
   int life = 3;
+  int levelCount = 0;
 
 // Player movement speed
   float moveLength = 20;
@@ -266,6 +267,7 @@ void draw(){
         newLevel(75,100,speed);
         tankCount = col * row;
         level = level + 1;
+        levelCount = levelCount + 1;
         gameMode = true;
         levelFinish = false;
       }
